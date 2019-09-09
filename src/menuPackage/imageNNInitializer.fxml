@@ -35,30 +35,24 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="px" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="304.0" spacing="10.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of hidden layers:" />
-                  <Spinner fx:id="hiddenLayersNumber_spin" prefHeight="26.0" prefWidth="81.0" />
-               </children>
-            </HBox>
             <HBox alignment="CENTER" prefHeight="26.0" prefWidth="378.0" spacing="10.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="43.0" prefWidth="63.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Input layer" />
-                        <TextField fx:id="inputLayer_txtField" alignment="CENTER_RIGHT" editable="false" prefHeight="26.0" prefWidth="54.0" />
+                        <TextField fx:id="inputLayer_txtField" alignment="CENTER" editable="false" prefHeight="26.0" prefWidth="54.0" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="43.0" prefWidth="162.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hidden layer" />
-                        <TextField fx:id="hiddenLayer_txtField" alignment="CENTER" />
+                        <TextField fx:id="hiddenLayer_txtField" alignment="CENTER" promptText="e.g. 10,5,15" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="42.0" prefWidth="67.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Output layer" />
-                        <TextField fx:id="outputLayer_txtField" alignment="CENTER" />
+                        <TextField fx:id="outputLayer_txtField" alignment="CENTER" promptText="e.g. 10" />
                      </children>
                   </VBox>
                </children>
@@ -66,7 +60,7 @@
             <HBox alignment="CENTER" prefHeight="53.0" prefWidth="304.0" spacing="10.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Learning rate:" />
-                  <Spinner fx:id="learningRate_spin" prefHeight="26.0" prefWidth="81.0" />
+                  <Spinner fx:id="learningRate_spin" editable="true" prefHeight="26.0" prefWidth="81.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="53.0" prefWidth="304.0">
