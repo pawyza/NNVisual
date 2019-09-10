@@ -22,10 +22,10 @@ import java.util.*;
 public class ImageNNController implements Initializable {
 
     @FXML
-    private TextField testFilePath_txt;
+    private TextField testDataPath_txt;
 
     @FXML
-    private Button runTest_btn;
+    private Button testNN_btn;
 
     @FXML
     private TextField testExampleID_txt;
@@ -85,9 +85,6 @@ public class ImageNNController implements Initializable {
     private TextField saveNNPath_txt;
 
     @FXML
-    private Button runTest_btn1;
-
-    @FXML
     private ImageView customData_img;
 
     @FXML
@@ -115,6 +112,7 @@ public class ImageNNController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         learningRate_txt.setText(String.valueOf(learningRate));
+        //TODO sprawdzanie poprawnosci wpisywanych ustawien i wybieranych sciezek, poprawianie/wyswietlanie komuniktow analogiczne do tworzenia modelu
     }
 
 
@@ -122,17 +120,22 @@ public class ImageNNController implements Initializable {
     void chooseSaveFilePath(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        System.out.println(file.getName());
+        saveNNPath_txt.setText(file.getPath());
+        saveNNPath_txt.setEditable(false);
     }
 
     @FXML
     void chooseTestFilePath(ActionEvent event) {
-
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+        testDataPath_txt.setText(file.getPath());
     }
 
     @FXML
     void chooseTrainFilePath(ActionEvent event) {
-
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+        trainDataPath_txt.setText(file.getPath());
     }
 
     @FXML
@@ -146,42 +149,15 @@ public class ImageNNController implements Initializable {
     }
 
     @FXML
-    void runTest(ActionEvent event) {
-        Data data = new Data(testFilePath_txt.getText());
-        if (layers[0] != data.getInputSize()) throw new IllegalArgumentException();
-        int examplesNumber;
-        if (data.getDataSize() < 10){
-            examplesNumber = 1;
-        } else if (data.getDataSize() < 100){
-            examplesNumber = 10;
-        } else if (data.getDataSize() < 1000){
-            examplesNumber = 100;
-        } else if (data.getDataSize() < 10000){
-            examplesNumber = 1000;
-        } else examplesNumber = 10000;
-        DecimalFormat percentFormatter = new DecimalFormat("#0.00");
-        DecimalFormat minutesFormatter = new DecimalFormat("###0");
-        DecimalFormat secondsFormatter = new DecimalFormat("#0");
-
-
-        long tik = 0;
-        long tok = 0;
-        List<Double> result;
-        int correct = 0;
-        for(int i = 0; i < data.getDataSize(); i++){
-            tik = System.currentTimeMillis();
-            result = Arrays.asList(network.predict(data.getData(i).getSecond()));
-            if(result.indexOf(Collections.max(result)) == data.getData(i).getFirst().intValue())
-                correct++;
-            tok = System.currentTimeMillis();
-            if(i % examplesNumber == 0){
-                updateExample(i,data.getData(i),data.getInputSize());
-            }
-            int testsLeft = data.getDataSize()-i;
-            testCompleted_txt.setText(percentFormatter.format(i/data.getDataSize()) + " %");
-            testEfficiency_txt.setText(percentFormatter.format(correct/(i+1)) + " %");
-            testTimeLeft_txt.setText(minutesFormatter.format(testsLeft * -(tik - tok) / 60000) + " m " + secondsFormatter.format((testsLeft * -(tik - tok) % 60000) / 1000) + " s");
-            testsLeft_txt.setText(String.valueOf(testsLeft));
+    void testNN(ActionEvent event) {
+        try {
+            Data data = new Data(testDataPath_txt.getText());
+            //TODO to chyba bedzie trzeba zrobic w osobnym watku zeby miec mozliwosc zastosowania observera.
+            new ImageNNTestingLogic().test(network, data, layers);
+            //TODO ustawianie ponowne przycisku
+            testNN_btn.setDisable(true);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
         }
     }
 
@@ -209,54 +185,18 @@ public class ImageNNController implements Initializable {
 
     @FXML
     void trainNN(ActionEvent event) {
-        Data data = new Data(trainDataPath_txt.getText());
-        if (layers[0] != data.getInputSize()) throw new IllegalArgumentException();
-        DecimalFormat percentFormatter = new DecimalFormat("#0.00");
-        DecimalFormat minutesFormatter = new DecimalFormat("###0");
-        DecimalFormat secondsFormatter = new DecimalFormat("#0");
-
-
-        long tik = 0;
-        long tok = 0;
-        List<Double> result;
-        int correct = 0;
-        int packages = Integer.valueOf(packagesNumber_txt.getText());
-        int packageSize =  Integer.valueOf(packageSize_txt.getText());
-        int packageRepetitions =  Integer.valueOf(packageRepetitions_txt.getText());
-        network.setLearningRate(Integer.valueOf(learningRate_txt.getText()));
-
-
-        for(int l = 0; l < packages; l++){
-            int[] dataPack = createDataPack(packageSize,data.getDataSize());
-            tik = System.currentTimeMillis();
-            for (int rep = 0; rep < packageRepetitions; rep++) {
-                for (int element: dataPack) {
-                    network.predict(data.getData(element).getSecond());
-                    network.learnNetwork(data.getData(element).getFirst().intValue());
-                }
-            }
-            correct = 0;
-            for (int element: dataPack) {
-                result = Arrays.asList(network.predict(data.getData(element).getSecond()));
-                if(result.indexOf(Collections.max(result)) == data.getData(element).getFirst().intValue())
-                    correct++;
-            }
-            tok = System.currentTimeMillis();
-            int packagesLeft = packages-l;
-            trainingCompleted_txt.setText(percentFormatter.format(l/packages) + " %");
-            packagesLeft_txt.setText(String.valueOf(packagesLeft));
-            lastPackageEfficiency_txt.setText(percentFormatter.format(correct/dataPack.length) + " %");
-            trainingTimeLeft_txt.setText(minutesFormatter.format(packagesLeft * -(tik - tok) / 60000) + " m " + secondsFormatter.format((packagesLeft * -(tik - tok) % 60000) / 1000) + " s");
-
+        try {
+            Data data = new Data(trainDataPath_txt.getText());
+            int packageNumber = Integer.valueOf(packagesNumber_txt.getText());
+            int packageSize = Integer.valueOf(packageSize_txt.getText());
+            int packageRepetitions = Integer.valueOf(packageRepetitions_txt.getText());
+            int learningRate = Integer.valueOf(learningRate_txt.getText());
+            //TODO to chyba bedzie trzeba zrobic w osobnym watku zeby miec mozliwosc zastosowania observera.
+            new ImageNNTrainingLogic().train(network, data, layers, packageNumber, packageSize, packageRepetitions, learningRate);
+            //TODO ustawianie ponowne przycisku
+            trainNN_btn.setDisable(true);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
         }
-    }
-
-    private int[] createDataPack(int packagesSize,int dataSize) {
-        int[] pack = new int[packagesSize];
-        Random rand = new Random();
-        for (int i = 0; i < pack.length; i++){
-            pack[i] = rand.nextInt(dataSize);
-        }
-        return pack;
     }
 }

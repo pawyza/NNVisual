@@ -19,7 +19,6 @@ import kotlin.text.Regex;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -125,10 +124,12 @@ public class ImageNNInitializerController implements Initializable {
             }
             checkSetup();
         });
+
+        testPurposeInit();
     }
 
     private void checkSetup() {
-        Integer[] layers = getLayers(hiddenLayer_txtField.getText());
+        Integer[] layers = getLayers();
 
         create_btn.setDisable(true);
 
@@ -142,17 +143,18 @@ public class ImageNNInitializerController implements Initializable {
         if(learningRate_spin.getValueFactory().getValue() == 0.0)
             return;
 
+        //TODO usunac po zakonczeniu testow
         create_btn.setDisable(false);
     }
 
-    private Integer[] getLayers(String hiddenLayerText){
+    private Integer[] getLayers(){
         List<Integer> hiddenLayer = new LinkedList<>();
 
         String input = inputLayer_txtField.getText();
         String output = outputLayer_txtField.getText();
 
         if(!input.isEmpty()) hiddenLayer.add(Integer.valueOf(input));
-        for(String layer : hiddenLayerText.split(",")){
+        for(String layer : hiddenLayer_txtField.getText().split(",")){
             if(!layer.isEmpty())
                 hiddenLayer.add(Integer.valueOf(layer));
         }
@@ -188,7 +190,7 @@ public class ImageNNInitializerController implements Initializable {
         Stage initializationStage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/imageNNPackage/imageNN.fxml"));
-            loader.setControllerFactory(controller -> new ImageNNController(imageWidth_spin.getValue(),createLayers(),learningRate_spin.getValue()));
+            loader.setControllerFactory(controller -> new ImageNNController(imageWidth_spin.getValue(),getLayers(),learningRate_spin.getValue()));
             stageReference.setScene(new Scene(loader.load()));
             initializationStage.close();
         } catch (IOException e) {
@@ -197,12 +199,11 @@ public class ImageNNInitializerController implements Initializable {
         }
     }
 
-    private Integer[] createLayers(){
-        List<Integer> layerList = new ArrayList<>(Integer.valueOf(inputLayer_txtField.getText()));
-        for(String value : hiddenLayer_txtField.getText().split(",")){
-            layerList.add(Integer.valueOf(value));
-        }
-        layerList.add(Integer.valueOf(outputLayer_txtField.getText()));
-        return layerList.toArray(new Integer[layerList.size()]);
+    private void testPurposeInit() {
+        inputLayer_txtField.setText("784");
+        hiddenLayer_txtField.setText("15");
+        outputLayer_txtField.setText("10");
+        learningRate_spin.getValueFactory().setValue(0.4);
+        checkSetup();
     }
 }
