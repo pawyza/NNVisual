@@ -6,5 +6,5 @@ module NNVisual {
     requires javafx.swing;
 
     opens menuPackage;
-    opens imageNNPackage;
+    opens neuralNetworkModelsPackage.imageNNPackage;
 }

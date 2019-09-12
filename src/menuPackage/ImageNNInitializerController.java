@@ -1,6 +1,6 @@
 package menuPackage;
 
-import imageNNPackage.ImageNNController;
+import neuralNetworkModelsPackage.imageNNPackage.ImageNNController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -189,7 +189,7 @@ public class ImageNNInitializerController implements Initializable {
     void onCreate(ActionEvent event) {
         Stage initializationStage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/imageNNPackage/imageNN.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/neuralNetworkModelsPackage/imageNNPackage/imageNN.fxml"));
             loader.setControllerFactory(controller -> new ImageNNController(imageWidth_spin.getValue(),getLayers(),learningRate_spin.getValue()));
             stageReference.setScene(new Scene(loader.load()));
             initializationStage.close();

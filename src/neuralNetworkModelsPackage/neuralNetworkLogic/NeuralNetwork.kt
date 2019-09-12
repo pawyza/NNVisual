@@ -1,4 +1,4 @@
-package imageNNPackage.logic
+package neuralNetworkModelsPackage.neuralNetworkLogic
 
 import java.text.DecimalFormat
 import kotlin.math.pow

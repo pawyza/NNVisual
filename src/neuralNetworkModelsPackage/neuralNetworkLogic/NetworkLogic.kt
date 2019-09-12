@@ -1,4 +1,4 @@
-package imageNNPackage.logic
+package neuralNetworkModelsPackage.neuralNetworkLogic
 
 import kotlin.math.exp
 

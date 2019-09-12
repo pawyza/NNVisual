@@ -1,8 +1,9 @@
-package imageNNPackage;
+package neuralNetworkModelsPackage.imageNNPackage;
 
 import dataLoadersPackage.csvLoader.Data;
 import dataLoadersPackage.csvLoader.ImageCreator;
-import imageNNPackage.logic.NeuralNetwork;
+import javafx.scene.text.Text;
+import neuralNetworkModelsPackage.neuralNetworkLogic.NeuralNetwork;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,14 +14,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import kotlin.Pair;
-
+import neuralNetworkModelsPackage.observerPatterLogic.Observable;
+import neuralNetworkModelsPackage.observerPatterLogic.Observer;
 import java.io.File;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class ImageNNController implements Initializable {
 
+    //<editor-fold desc="FXML controls">
     @FXML
     private TextField testDataPath_txt;
 
@@ -70,7 +72,16 @@ public class ImageNNController implements Initializable {
     private Button trainNN_btn;
 
     @FXML
-    private TextField packagesLeft_txt;
+    private Text messageText_txt;
+
+    @FXML
+    private TextField saveNNPath_txt;
+
+    @FXML
+    private Button save_btn;
+
+    @FXML
+    private TextField trainingPackagesLeft_txt;
 
     @FXML
     private TextField trainingTimeLeft_txt;
@@ -79,10 +90,7 @@ public class ImageNNController implements Initializable {
     private TextField trainingCompleted_txt;
 
     @FXML
-    private TextField lastPackageEfficiency_txt;
-
-    @FXML
-    private TextField saveNNPath_txt;
+    private TextField trainingLastPackageEfficiency_txt;
 
     @FXML
     private ImageView customData_img;
@@ -95,6 +103,7 @@ public class ImageNNController implements Initializable {
 
     @FXML
     private MenuItem saveModel_barBtn;
+    //</editor-fold>
 
     private Double learningRate;
     private Integer[] layers;
@@ -112,6 +121,8 @@ public class ImageNNController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         learningRate_txt.setText(String.valueOf(learningRate));
+        //TODO do usuniecia
+        testSetup();
         //TODO sprawdzanie poprawnosci wpisywanych ustawien i wybieranych sciezek, poprawianie/wyswietlanie komuniktow analogiczne do tworzenia modelu
     }
 
@@ -120,22 +131,24 @@ public class ImageNNController implements Initializable {
     void chooseSaveFilePath(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        saveNNPath_txt.setText(file.getPath());
-        saveNNPath_txt.setEditable(false);
+        if(file != null)
+            saveNNPath_txt.setText(file.getPath());
     }
 
     @FXML
     void chooseTestFilePath(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        testDataPath_txt.setText(file.getPath());
+        if(file != null)
+            testDataPath_txt.setText(file.getPath());
     }
 
     @FXML
     void chooseTrainFilePath(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        trainDataPath_txt.setText(file.getPath());
+        if(file != null)
+            trainDataPath_txt.setText(file.getPath());
     }
 
     @FXML
@@ -159,6 +172,7 @@ public class ImageNNController implements Initializable {
         } catch (IllegalArgumentException e){
             e.printStackTrace();
         }
+        testNN_btn.setDisable(false);
     }
 
     private void updateExample(int i, Pair<Double, Double[]> dataExample,int inputSize) {
@@ -186,17 +200,63 @@ public class ImageNNController implements Initializable {
     @FXML
     void trainNN(ActionEvent event) {
         try {
+            //TODO dane trzeba bedzie chyba robic w innym watku i zrobic observera(inaczej nie bedzie dzialac komunikat)
+            messageText_txt.setText("Loading data");
             Data data = new Data(trainDataPath_txt.getText());
+            messageText_txt.setText("");
+
             int packageNumber = Integer.valueOf(packagesNumber_txt.getText());
             int packageSize = Integer.valueOf(packageSize_txt.getText());
             int packageRepetitions = Integer.valueOf(packageRepetitions_txt.getText());
-            int learningRate = Integer.valueOf(learningRate_txt.getText());
-            //TODO to chyba bedzie trzeba zrobic w osobnym watku zeby miec mozliwosc zastosowania observera.
-            new ImageNNTrainingLogic().train(network, data, layers, packageNumber, packageSize, packageRepetitions, learningRate);
+            double learningRate = Double.valueOf(learningRate_txt.getText());
+            TextField[] textControls = {trainingCompleted_txt,trainingPackagesLeft_txt,trainingLastPackageEfficiency_txt,trainingTimeLeft_txt};
+
+            ImageNNTrainingLogic trainingLogic = new ImageNNTrainingLogic(network, data, layers, packageNumber, packageSize, packageRepetitions, learningRate);
+
+            class TrainingObserver implements Observer {
+
+                private final Observable observed;
+
+                private TrainingObserver(Observable observed){
+                    this.observed = observed;
+                }
+
+                @Override
+                public Observable getObserved() {
+                    return observed;
+                }
+
+                @Override
+                public void update() {
+                    trainingCompleted_txt.setText(observed.getState().getPercentageOfCompleted() + " %");
+                    trainingLastPackageEfficiency_txt.setText(observed.getState().getEfficiencyInPercentage() + " %");
+                    trainingPackagesLeft_txt.setText(observed.getState().getLeft());
+                    trainingTimeLeft_txt.setText(observed.getState().getTimeLeft());
+                }
+            }
+
+            trainingCompleted_txt.setDisable(false);
+            trainingLastPackageEfficiency_txt.setDisable(false);
+            trainingPackagesLeft_txt.setDisable(false);
+            trainingTimeLeft_txt.setDisable(false);
+            TrainingObserver trainingObserver = new TrainingObserver(trainingLogic);
+            trainingLogic.addObserver(trainingObserver);
+            trainingLogic.start();
+
             //TODO ustawianie ponowne przycisku
             trainNN_btn.setDisable(true);
         } catch (IllegalArgumentException e){
             e.printStackTrace();
         }
+        trainNN_btn.setDisable(false);
+    }
+
+    //TODO do usuniecia
+    private void testSetup(){
+        testDataPath_txt.setText("D:\\nnLearning\\mnist_test.csv");
+        trainDataPath_txt.setText("D:\\nnLearning\\mnist_train.csv");
+        packagesNumber_txt.setText("100");
+        packageSize_txt.setText("10");
+        packageRepetitions_txt.setText("10");
     }
 }

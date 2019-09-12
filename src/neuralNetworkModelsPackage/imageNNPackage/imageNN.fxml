@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="imageNNPackage.ImageNNController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="neuralNetworkModelsPackage.imageNNPackage.ImageNNController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
          <tabs>
@@ -74,7 +74,7 @@
                                        </padding>
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tests left:" />
-                                          <TextField fx:id="testsLeft_txt" alignment="CENTER_RIGHT" editable="false" prefHeight="26.0" prefWidth="52.0" promptText="0" />
+                                          <TextField fx:id="testsLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="52.0" promptText="0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
                                           <TextField fx:id="testTimeLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="80.0" promptText="00:00:00" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Completed:" />
@@ -93,13 +93,13 @@
             </Tab>
             <Tab text="Train">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="600.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <VBox prefHeight="320.0" prefWidth="762.0">
+                        <VBox>
                            <children>
-                              <AnchorPane prefHeight="60.0" prefWidth="762.0">
+                              <AnchorPane prefHeight="65.0" prefWidth="770.0">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="600.0" spacing="10.0">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="570.0" spacing="10.0">
                                        <padding>
                                           <Insets left="20.0" />
                                        </padding>
@@ -109,80 +109,72 @@
                                                 <Insets />
                                              </HBox.margin>
                                           </Text>
-                                          <TextField fx:id="trainDataPath_txt" disable="true" editable="false" prefHeight="26.0" prefWidth="416.0" promptText="path to file" />
+                                          <TextField fx:id="trainDataPath_txt" prefHeight="26.0" prefWidth="416.0" promptText="path to file" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" layoutX="495.0" prefHeight="50.0" prefWidth="125.0" spacing="30.0" AnchorPane.rightAnchor="0.0">
+                                    <HBox alignment="CENTER" layoutX="495.0" prefHeight="71.0" prefWidth="206.0" spacing="30.0" AnchorPane.rightAnchor="8.0">
                                        <children>
                                           <Button mnemonicParsing="false" onAction="#chooseTrainFilePath" prefHeight="35.0" prefWidth="100.0" text="Choose file" />
                                        </children>
                                     </HBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="95.0" prefWidth="762.0">
+                              <AnchorPane>
                                  <children>
-                                    <VBox prefHeight="110.0" prefWidth="615.0">
+                                    <HBox alignment="CENTER" layoutX="495.0" prefHeight="116.0" prefWidth="762.0" spacing="30.0" AnchorPane.rightAnchor="6.0">
                                        <children>
-                                          <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+                                          <VBox prefHeight="110.0" prefWidth="519.0">
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data packages:">
-                                                   <HBox.margin>
-                                                      <Insets right="24.0" />
-                                                   </HBox.margin>
-                                                </Text>
-                                                <TextField fx:id="packagesNumber_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="number">
-                                                   <HBox.margin>
-                                                      <Insets right="10.0" />
-                                                   </HBox.margin></TextField>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Package size:" />
-                                                <TextField fx:id="packageSize_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="size" />
+                                                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data packages:">
+                                                         <HBox.margin>
+                                                            <Insets right="24.0" />
+                                                         </HBox.margin>
+                                                      </Text>
+                                                      <TextField fx:id="packagesNumber_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="number">
+                                                         <HBox.margin>
+                                                            <Insets right="10.0" />
+                                                         </HBox.margin>
+                                                      </TextField>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Package size:" />
+                                                      <TextField fx:id="packageSize_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="size" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Package repetitions:">
+                                                         <HBox.margin>
+                                                            <Insets />
+                                                         </HBox.margin>
+                                                      </Text>
+                                                      <TextField fx:id="packageRepetitions_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="number">
+                                                         <HBox.margin>
+                                                            <Insets right="10.0" />
+                                                         </HBox.margin>
+                                                      </TextField>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Learning rate:" />
+                                                      <TextField fx:id="learningRate_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="number" />
+                                                   </children>
+                                                </HBox>
                                              </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" spacing="20.0">
+                                          </VBox>
+                                          <VBox alignment="CENTER" prefHeight="116.0" prefWidth="202.0" spacing="20.0">
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Package repetitions:">
-                                                   <HBox.margin>
-                                                      <Insets />
-                                                   </HBox.margin></Text>
-                                                <TextField fx:id="packageRepetitions_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="number">
-                                                   <HBox.margin>
-                                                      <Insets right="10.0" />
-                                                   </HBox.margin></TextField>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Learning rate:" />
-                                                <TextField fx:id="learningRate_txt" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="70.0" promptText="number" />
+                                                <Button fx:id="trainNN_btn" mnemonicParsing="false" onAction="#trainNN" prefHeight="35.0" prefWidth="100.0" text="Train" />
+                                                <Text fx:id="messageText_txt" strokeType="OUTSIDE" strokeWidth="0.0" />
                                              </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                    <HBox alignment="CENTER" layoutX="495.0" prefHeight="100.0" prefWidth="126.0" spacing="30.0" AnchorPane.rightAnchor="0.0">
-                                       <children>
-                                          <Button fx:id="trainNN_btn" mnemonicParsing="false" onAction="#trainNN" prefHeight="35.0" prefWidth="100.0" text="Train" />
+                                             <padding>
+                                                <Insets top="20.0" />
+                                             </padding>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="29.0" prefWidth="762.0">
+                              <AnchorPane prefHeight="72.0" prefWidth="770.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="78.0" prefWidth="762.0" spacing="15.0">
-                                       <padding>
-                                          <Insets left="20.0" />
-                                       </padding>
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Packages left:" />
-                                          <TextField fx:id="packagesLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="52.0" promptText="0" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
-                                          <TextField fx:id="trainingTimeLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="80.0" promptText="00:00:00" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Completed:" />
-                                          <TextField fx:id="trainingCompleted_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="46.0" promptText="0 %" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last package efficiency:" />
-                                          <TextField fx:id="lastPackageEfficiency_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="50.0" promptText="0 %" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane prefHeight="60.0" prefWidth="762.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="522.0" spacing="10.0">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="522.0" spacing="10.0">
                                        <padding>
                                           <Insets left="20.0" />
                                        </padding>
@@ -192,13 +184,32 @@
                                                 <Insets right="10.0" />
                                              </HBox.margin>
                                           </Text>
-                                          <TextField fx:id="saveNNPath_txt" disable="true" editable="false" prefHeight="26.0" prefWidth="416.0" promptText="save path" />
+                                          <TextField fx:id="saveNNPath_txt" prefHeight="26.0" prefWidth="416.0" promptText="save path" />
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" layoutX="524.0" layoutY="5.0" prefHeight="50.0" prefWidth="238.0" spacing="15.0">
+                                    <HBox alignment="CENTER" layoutX="524.0" layoutY="5.0" prefHeight="80.0" prefWidth="238.0" spacing="15.0">
                                        <children>
                                           <Button mnemonicParsing="false" onAction="#chooseSaveFilePath" prefHeight="35.0" prefWidth="100.0" text="Choose path" />
                                           <Button fx:id="save_btn" mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="100.0" text="Save" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane>
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="78.0" prefWidth="762.0" spacing="15.0">
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Packages left:" />
+                                          <TextField fx:id="trainingPackagesLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="74.0" promptText="0" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
+                                          <TextField fx:id="trainingTimeLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="80.0" promptText="00:00" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Completed:" />
+                                          <TextField fx:id="trainingCompleted_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="69.0" promptText="0 %" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last package efficiency:" />
+                                          <TextField fx:id="trainingLastPackageEfficiency_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="76.0" promptText="0 %" />
                                        </children>
                                     </HBox>
                                  </children>
