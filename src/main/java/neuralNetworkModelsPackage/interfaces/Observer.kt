@@ -1,4 +1,4 @@
-package neuralNetworkModelsPackage.observerPatterLogic
+package neuralNetworkModelsPackage.interfaces
 
 interface Observer {
 

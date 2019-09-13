@@ -1,4 +1,6 @@
-package neuralNetworkModelsPackage.observerPatterLogic
+package neuralNetworkModelsPackage.interfaces
+
+import neuralNetworkModelsPackage.dataClasses.NetworkState
 
 interface Observable {
 
