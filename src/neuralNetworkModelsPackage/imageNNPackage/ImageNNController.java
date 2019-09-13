@@ -164,11 +164,20 @@ public class ImageNNController implements Initializable {
     @FXML
     void testNN(ActionEvent event) {
         try {
-            Data data = new Data(testDataPath_txt.getText());
-            //TODO to chyba bedzie trzeba zrobic w osobnym watku zeby miec mozliwosc zastosowania observera.
-            new ImageNNTestingLogic().test(network, data, layers);
+            //TODO dane trzeba bedzie chyba robic w innym watku i zrobic observera(inaczej nie bedzie dzialac komunikat)
+            messageText_txt.setText("Loading data");
+            Data data = new Data(trainDataPath_txt.getText());
+            messageText_txt.setText("");
+
+            setViewsIndicators(false, testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt);
+
+            ImageNNTestingLogic testingLogic = new ImageNNTestingLogic(network, data, layers);
+            Observer trainingObserver = prepareObserver(testingLogic,testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt);
+            testingLogic.addObserver(trainingObserver);
+            testingLogic.start();
             //TODO ustawianie ponowne przycisku
             testNN_btn.setDisable(true);
+
         } catch (IllegalArgumentException e){
             e.printStackTrace();
         }
@@ -209,37 +218,11 @@ public class ImageNNController implements Initializable {
             int packageSize = Integer.valueOf(packageSize_txt.getText());
             int packageRepetitions = Integer.valueOf(packageRepetitions_txt.getText());
             double learningRate = Double.valueOf(learningRate_txt.getText());
-            TextField[] textControls = {trainingCompleted_txt,trainingPackagesLeft_txt,trainingLastPackageEfficiency_txt,trainingTimeLeft_txt};
+
+            setViewsIndicators(false, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
 
             ImageNNTrainingLogic trainingLogic = new ImageNNTrainingLogic(network, data, layers, packageNumber, packageSize, packageRepetitions, learningRate);
-
-            class TrainingObserver implements Observer {
-
-                private final Observable observed;
-
-                private TrainingObserver(Observable observed){
-                    this.observed = observed;
-                }
-
-                @Override
-                public Observable getObserved() {
-                    return observed;
-                }
-
-                @Override
-                public void update() {
-                    trainingCompleted_txt.setText(observed.getState().getPercentageOfCompleted() + " %");
-                    trainingLastPackageEfficiency_txt.setText(observed.getState().getEfficiencyInPercentage() + " %");
-                    trainingPackagesLeft_txt.setText(observed.getState().getLeft());
-                    trainingTimeLeft_txt.setText(observed.getState().getTimeLeft());
-                }
-            }
-
-            trainingCompleted_txt.setDisable(false);
-            trainingLastPackageEfficiency_txt.setDisable(false);
-            trainingPackagesLeft_txt.setDisable(false);
-            trainingTimeLeft_txt.setDisable(false);
-            TrainingObserver trainingObserver = new TrainingObserver(trainingLogic);
+            Observer trainingObserver = prepareObserver(trainingLogic ,trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
             trainingLogic.addObserver(trainingObserver);
             trainingLogic.start();
 
@@ -249,6 +232,42 @@ public class ImageNNController implements Initializable {
             e.printStackTrace();
         }
         trainNN_btn.setDisable(false);
+    }
+
+    private void setViewsIndicators(boolean state, TextField completed, TextField efficiency, TextField left, TextField timeLeft){
+        completed.setDisable(state);
+        efficiency.setDisable(state);
+        left.setDisable(state);
+        timeLeft.setDisable(state);
+    }
+
+    private Observer prepareObserver(Observable logic ,TextField completed, TextField efficiency, TextField left, TextField timeLeft){
+
+        class ObserverObject implements Observer {
+
+            private final Observable observed;
+
+            private ObserverObject(Observable observed){
+                this.observed = observed;
+            }
+
+            @Override
+            public Observable getObserved() {
+                return observed;
+            }
+
+            @Override
+            public void update() {
+                completed.setText(observed.getState().getPercentageOfCompleted() + " %");
+                efficiency.setText(observed.getState().getEfficiencyInPercentage() + " %");
+                left.setText(observed.getState().getLeft());
+                timeLeft.setText(observed.getState().getTimeLeft());
+            }
+        }
+
+        ObserverObject observerObject = new ObserverObject(logic);
+
+        return observerObject;
     }
 
     //TODO do usuniecia

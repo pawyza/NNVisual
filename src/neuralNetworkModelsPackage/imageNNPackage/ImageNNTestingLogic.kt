@@ -7,12 +7,20 @@ import neuralNetworkModelsPackage.observerPatterLogic.Observer
 import neuralNetworkModelsPackage.neuralNetworkLogic.NeuralNetwork
 import java.text.DecimalFormat
 
-class ImageNNTestingLogic : Observable{
+class ImageNNTestingLogic(private val network : NeuralNetwork,private val data : Data,private val layers : Array<Int>) : Thread(), Observable{
 
     override val observers: MutableList<Observer> = mutableListOf()
     override var state: NetworkState = NetworkState("","","","")
 
-    fun test(network : NeuralNetwork, data : Data, layers : Array<Int>){
+    override fun run() {
+        try {
+            test()
+        } catch (e : Exception){
+
+        }
+    }
+
+    private fun test(){
 
         if (layers[0] != data.getInputSize()) throw IllegalArgumentException()
         val examplesNumber : Int
@@ -27,17 +35,14 @@ class ImageNNTestingLogic : Observable{
         val minutesFormatter = DecimalFormat("###0")
         val secondsFormatter = DecimalFormat("#0")
 
-        var tik: Long = 0
-        var tok: Long = 0
-        var result : List<Double>
         var correct = 0
         for(i in 0 until data.getDataSize()){
-            tik = System.currentTimeMillis()
+            val tik = System.currentTimeMillis()
             val result = network.predict(data.getData(i).second)
             when (result.indexOf(result.max()) == data.getData(i).first.toInt()) {
                 true -> correct++
             }
-            tok = System.currentTimeMillis();
+            val tok = System.currentTimeMillis();
 
             //Observer implementation
             val testsLeft = data.getDataSize()-i

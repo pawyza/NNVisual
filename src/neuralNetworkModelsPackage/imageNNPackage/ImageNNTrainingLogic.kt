@@ -27,15 +27,13 @@ class ImageNNTrainingLogic(private  val network : NeuralNetwork, private val dat
         val minutesFormatter = DecimalFormat("###0")
         val secondsFormatter = DecimalFormat("00")
 
-        var tik: Long = 0
-        var tok: Long = 0
         var result : Array<Double>
         var correct = 0
         network.learningRate = learningRate
 
-        for (l in 0 until packages) {
+        for (l in 1.rangeTo(packages)) {
             val dataPack = createDataPack(packageSize, data.getDataSize())
-            tik = System.currentTimeMillis()
+            val tik = System.currentTimeMillis()
             for (rep in 0 until packageRepetitions) {
                 for (element in dataPack) {
                     network.predict(data.getData(element).second)
@@ -48,7 +46,7 @@ class ImageNNTrainingLogic(private  val network : NeuralNetwork, private val dat
                 if (result.indexOf(result.max()) == data.getData(element).first.toInt())
                     correct++
             }
-            tok = System.currentTimeMillis()
+            val tok = System.currentTimeMillis()
 
             //Observer implementation
             val packagesLeft = packages - l

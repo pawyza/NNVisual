@@ -74,13 +74,13 @@
                                        </padding>
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tests left:" />
-                                          <TextField fx:id="testsLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="52.0" promptText="0" />
+                                          <TextField fx:id="testsLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="78.0" promptText="0" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
-                                          <TextField fx:id="testTimeLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="80.0" promptText="00:00:00" />
+                                          <TextField fx:id="testTimeLeft_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="80.0" promptText="00:00" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Completed:" />
-                                          <TextField fx:id="testCompleted_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="46.0" promptText="0 %" />
+                                          <TextField fx:id="testCompleted_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="82.0" promptText="0 %" />
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Efficiency:" />
-                                          <TextField fx:id="testEfficiency_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="50.0" promptText="0 %" />
+                                          <TextField fx:id="testEfficiency_txt" alignment="CENTER_RIGHT" disable="true" editable="false" prefHeight="26.0" prefWidth="93.0" promptText="0 %" />
                                        </children>
                                     </HBox>
                                  </children>
