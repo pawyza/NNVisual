@@ -25,9 +25,9 @@
                      <children>
                         <VBox prefHeight="320.0" prefWidth="762.0">
                            <children>
-                              <AnchorPane prefHeight="60.0" prefWidth="762.0">
+                              <AnchorPane prefHeight="76.0" prefWidth="762.0">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="513.0" spacing="10.0">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="57.0" prefWidth="514.0" spacing="10.0">
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Test data:">
                                              <HBox.margin>
@@ -40,24 +40,33 @@
                                           <Insets left="20.0" />
                                        </padding>
                                     </HBox>
-                                    <HBox alignment="CENTER" layoutX="495.0" prefHeight="50.0" prefWidth="238.0" spacing="15.0" AnchorPane.rightAnchor="0.0">
+                                    <VBox layoutX="514.0" prefHeight="73.0" prefWidth="246.0">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#chooseTestFilePath" prefHeight="35.0" prefWidth="100.0" text="Choose file" />
-                                          <Button fx:id="testNN_btn" mnemonicParsing="false" onAction="#testNN" prefHeight="35.0" prefWidth="100.0" text="Test" />
+                                          <HBox alignment="CENTER" prefHeight="96.0" prefWidth="246.0" spacing="15.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#chooseTestFilePath" prefHeight="35.0" prefWidth="100.0" text="Choose file" />
+                                                <Button fx:id="testNN_btn" mnemonicParsing="false" onAction="#testNN" prefHeight="35.0" prefWidth="100.0" text="Test" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="44.0" prefWidth="246.0" spacing="15.0">
+                                             <children>
+                                                <Text fx:id="messageTest_txt" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                             </children>
+                                          </HBox>
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="203.0" prefWidth="762.0">
+                              <AnchorPane prefHeight="202.0" prefWidth="762.0">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefHeight="206.0" prefWidth="762.0" spacing="10.0">
                                        <children>
                                           <VBox alignment="CENTER" prefHeight="206.0" prefWidth="170.0" spacing="10.0">
                                              <children>
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Example Image ID:" />
-                                                <TextField fx:id="testExampleID_txt" alignment="CENTER" prefHeight="7.0" prefWidth="36.0" promptText=" 0" />
+                                                <TextField fx:id="testExampleID_txt" alignment="CENTER" prefHeight="7.0" prefWidth="36.0" promptText="1" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Example prediction:" />
-                                                <TextField fx:id="testExamplePrediction_txt" alignment="CENTER" prefHeight="26.0" prefWidth="40.0" promptText="Prediction" />
+                                                <TextField fx:id="testExamplePrediction_txt" alignment="CENTER" editable="false" prefHeight="26.0" prefWidth="40.0" promptText="Prediction" />
                                              </children>
                                           </VBox>
                                           <ImageView fx:id="testsExample_img" fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
@@ -66,9 +75,9 @@
                                     </HBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="29.0" prefWidth="762.0">
+                              <AnchorPane prefHeight="45.0" prefWidth="762.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="762.0" spacing="15.0">
+                                    <HBox alignment="CENTER" prefHeight="55.0" prefWidth="762.0" spacing="15.0">
                                        <padding>
                                           <Insets left="20.0" />
                                        </padding>
@@ -162,7 +171,7 @@
                                           <VBox alignment="CENTER" prefHeight="116.0" prefWidth="202.0" spacing="20.0">
                                              <children>
                                                 <Button fx:id="trainNN_btn" mnemonicParsing="false" onAction="#trainNN" prefHeight="35.0" prefWidth="100.0" text="Train" />
-                                                <Text fx:id="messageText_txt" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                                <Text fx:id="messageTrain_txt" strokeType="OUTSIDE" strokeWidth="0.0" />
                                              </children>
                                              <padding>
                                                 <Insets top="20.0" />

@@ -2,11 +2,9 @@ package neuralNetworkModelsPackage.imageNNPackage;
 
 import dataLoadersPackage.csvLoader.Data;
 import dataLoadersPackage.csvLoader.ImageCreator;
+import dataLoadersPackage.csvLoader.SupportedFiles;
 import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.scene.text.Text;
-import neuralNetworkModelsPackage.interfaces.Logic;
 import neuralNetworkModelsPackage.neuralNetworkLogic.NeuralNetwork;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -80,7 +78,10 @@ public class ImageNNController implements Initializable {
     private Button trainNN_btn;
 
     @FXML
-    private Text messageText_txt;
+    private Text messageTest_txt;
+
+    @FXML
+    private Text messageTrain_txt;
 
     @FXML
     private TextField saveNNPath_txt;
@@ -113,6 +114,8 @@ public class ImageNNController implements Initializable {
     private MenuItem saveModel_barBtn;
     //</editor-fold>
 
+    private FileChooser.ExtensionFilter supportedExtension;
+
     private Double learningRate;
     private Integer[] layers;
     private Integer imageWidth;
@@ -122,6 +125,7 @@ public class ImageNNController implements Initializable {
         this.learningRate = learningRate;
         this.layers = layers;
         this.imageWidth = imageWidth;
+        supportedExtension = new FileChooser.ExtensionFilter("Data" , SupportedFiles.INSTANCE.getExtensionsList());
         network = new NeuralNetwork(layers, learningRate);
     }
 
@@ -145,18 +149,22 @@ public class ImageNNController implements Initializable {
 
     @FXML
     void chooseTestFilePath(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(null);
+        File file = getFile();
         if(file != null)
             testDataPath_txt.setText(file.getPath());
     }
 
     @FXML
     void chooseTrainFilePath(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(null);
+        File file = getFile();
         if(file != null)
             trainDataPath_txt.setText(file.getPath());
+    }
+
+    private File getFile(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(supportedExtension);
+        return fileChooser.showOpenDialog(null);
     }
 
     @FXML
@@ -172,12 +180,12 @@ public class ImageNNController implements Initializable {
     @FXML
     void testNN(ActionEvent event) {
         try {
-            messageText_txt.setText("Loading data");
+            messageTest_txt.setText("Loading data");
             testNN_btn.setDisable(true);
             Service dataService = new DataService(testDataPath_txt.getText());
             dataService.start();
             dataService.setOnSucceeded(dataEvent -> {
-                messageText_txt.setText("Testing network");
+                messageTest_txt.setText("Testing network");
                 Data data = ((DataService) dataService).getValue();
                 setViewsIndicators(false, testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt);
 
@@ -186,8 +194,6 @@ public class ImageNNController implements Initializable {
                 Observer testingObserver = prepareObserver(testingLogic,testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt);
                 testingLogic.addObserver(testingObserver);
 
-                //testingLogic.run();
-
                 Service testingService = new LogicService(testingLogic);
                 testingService.start();
 
@@ -195,27 +201,27 @@ public class ImageNNController implements Initializable {
                 testingService.setOnSucceeded(logicEvent -> {
                     //System.out.println(logicEvent.getEventType().getName());
                     setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt);
-                    messageText_txt.setText("Testing done successfully");
+                    messageTest_txt.setText("Testing done successfully");
                     testNN_btn.setDisable(false);
                 });
 
                 testingService.setOnFailed(logicEvent -> {
                     //System.out.println(logicEvent.getEventType().getName());
                     setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt);
-                    messageText_txt.setText("Testing failed");
+                    messageTest_txt.setText("Testing failed");
                     testNN_btn.setDisable(false);
                     });
                 });
             dataService.setOnFailed(dataEvent -> {
                 setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt);
-                messageText_txt.setText("Error while loading data");
+                messageTest_txt.setText("Error while loading data");
                 testNN_btn.setDisable(false);
                 });
 
         } catch (IllegalArgumentException e){
             e.printStackTrace();
             testNN_btn.setDisable(false);
-            messageText_txt.setText("Error");
+            messageTest_txt.setText("Error");
         }
     }
 
@@ -248,13 +254,13 @@ public class ImageNNController implements Initializable {
             int packageSize = Integer.valueOf(packageSize_txt.getText());
             int packageRepetitions = Integer.valueOf(packageRepetitions_txt.getText());
             double learningRate = Double.valueOf(learningRate_txt.getText());
-            messageText_txt.setText("Loading data");
+            messageTrain_txt.setText("Loading data");
             trainNN_btn.setDisable(true);
 
             Service dataService = new DataService(trainDataPath_txt.getText());
             dataService.start();
             dataService.setOnSucceeded(dataEvent -> {
-                messageText_txt.setText("Training network");
+                messageTrain_txt.setText("Training network");
                 Data data = ((DataService) dataService).getValue();
                 setViewsIndicators(false, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
 
@@ -267,24 +273,24 @@ public class ImageNNController implements Initializable {
 
                 logicService.setOnSucceeded(logicEvent ->{
                     setViewsIndicators(true, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
-                    messageText_txt.setText("Training done successfully");
+                    messageTrain_txt.setText("Training done successfully");
                     trainNN_btn.setDisable(false);
                 });
                 logicService.setOnFailed(logicEvent -> {
                     setViewsIndicators(true, trainingCompleted_txt, trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
-                    messageText_txt.setText("Training failed");
+                    messageTrain_txt.setText("Training failed");
                     trainNN_btn.setDisable(false);
                 });
             });
             dataService.setOnFailed(dataEvent -> {
                 setViewsIndicators(true, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
-                messageText_txt.setText("Error while loading data");
+                messageTrain_txt.setText("Error while loading data");
                 trainNN_btn.setDisable(false);
             });
         } catch (IllegalArgumentException e){
             e.printStackTrace();
             trainNN_btn.setDisable(false);
-            messageText_txt.setText("Error");
+            messageTrain_txt.setText("Error");
         }
     }
 
