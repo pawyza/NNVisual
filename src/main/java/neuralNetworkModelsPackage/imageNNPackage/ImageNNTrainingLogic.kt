@@ -12,7 +12,7 @@ import java.util.*
 class ImageNNTrainingLogic(private  val network : NeuralNetwork, private val data : Data,private val layers : Array<Int>, private val packages : Int, private val packageSize : Int,private val packageRepetitions : Int,private val learningRate : Double) : Logic, Observable{
 
     override val observers: MutableList<Observer> = mutableListOf()
-    override var state: NetworkState = NetworkState("", "", "", "")
+    override var state : NetworkState? = null
 
     override fun run() {
         require(layers[0] == data.getInputSize())
@@ -20,7 +20,7 @@ class ImageNNTrainingLogic(private  val network : NeuralNetwork, private val dat
         val minutesFormatter = DecimalFormat("###0")
         val secondsFormatter = DecimalFormat("00")
 
-        var result : Array<Double>
+        var result : Array<Double> = arrayOf()
         var correct = 0
         network.learningRate = learningRate
 
@@ -44,6 +44,8 @@ class ImageNNTrainingLogic(private  val network : NeuralNetwork, private val dat
             //Observer implementation
             val packagesLeft = packages - l
             state = NetworkState(
+                    currentInputData = dataPack.last(),
+                    prediction = result.indexOf(result.max()),
                     percentageOfCompleted = percentFormatter.format((l / packages.toDouble()) * 100),
                     left = "$packagesLeft",
                     efficiencyInPercentage = percentFormatter.format((correct / dataPack.size.toDouble()) * 100),

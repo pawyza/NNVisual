@@ -5,7 +5,7 @@ import neuralNetworkModelsPackage.dataClasses.NetworkState
 interface Observable {
 
     val observers : MutableList<Observer>
-    var state : NetworkState
+    var state : NetworkState?
 
     fun addObserver(observer: Observer) {
         observers.add(observer)

@@ -84,6 +84,18 @@ public class ImageNNController implements Initializable {
     private Text messageTrain_txt;
 
     @FXML
+    private ImageView trainingExample_img;
+
+    @FXML
+    private ImageView trainingExampleNNState_img;
+
+    @FXML
+    private TextField trainingExamplePrediction_txt;
+
+    @FXML
+    private TextField trainingExampleID_txt;
+
+    @FXML
     private TextField saveNNPath_txt;
 
     @FXML
@@ -187,11 +199,11 @@ public class ImageNNController implements Initializable {
             dataService.setOnSucceeded(dataEvent -> {
                 messageTest_txt.setText("Testing network");
                 Data data = ((DataService) dataService).getValue();
-                setViewsIndicators(false, testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt);
+                setViewsIndicators(false, testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt,testExampleID_txt,testExamplePrediction_txt);
 
                 ImageNNTestingLogic testingLogic = new ImageNNTestingLogic(network, data, layers);
 
-                Observer testingObserver = prepareObserver(testingLogic,testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt);
+                Observer testingObserver = prepareObserver(testingLogic,data,testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt,testsExample_img,testExampleID_txt,testExamplePrediction_txt);
                 testingLogic.addObserver(testingObserver);
 
                 Service testingService = new LogicService(testingLogic);
@@ -200,20 +212,20 @@ public class ImageNNController implements Initializable {
 
                 testingService.setOnSucceeded(logicEvent -> {
                     //System.out.println(logicEvent.getEventType().getName());
-                    setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt);
+                    setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt,testExampleID_txt,testExamplePrediction_txt);
                     messageTest_txt.setText("Testing done successfully");
                     testNN_btn.setDisable(false);
                 });
 
                 testingService.setOnFailed(logicEvent -> {
                     //System.out.println(logicEvent.getEventType().getName());
-                    setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt);
+                    setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt,testExampleID_txt,testExamplePrediction_txt);
                     messageTest_txt.setText("Testing failed");
                     testNN_btn.setDisable(false);
                     });
                 });
             dataService.setOnFailed(dataEvent -> {
-                setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt);
+                setViewsIndicators(true, testCompleted_txt, testEfficiency_txt, testsLeft_txt ,testTimeLeft_txt,testExampleID_txt,testExamplePrediction_txt);
                 messageTest_txt.setText("Error while loading data");
                 testNN_btn.setDisable(false);
                 });
@@ -223,13 +235,6 @@ public class ImageNNController implements Initializable {
             testNN_btn.setDisable(false);
             messageTest_txt.setText("Error");
         }
-    }
-
-    private void updateExample(int i, Pair<Double, Double[]> dataExample,int inputSize) {
-        testExampleID_txt.setText(String.valueOf(i));
-        testExamplePrediction_txt.setText(String.valueOf(dataExample.getFirst().intValue()));
-        int scale = (int) testsExample_img.getFitHeight()/inputSize;
-        testsExample_img.setImage(SwingFXUtils.toFXImage(ImageCreator.INSTANCE.displayData(dataExample.getSecond(),scale),null));
     }
 
     @FXML
@@ -262,28 +267,28 @@ public class ImageNNController implements Initializable {
             dataService.setOnSucceeded(dataEvent -> {
                 messageTrain_txt.setText("Training network");
                 Data data = ((DataService) dataService).getValue();
-                setViewsIndicators(false, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
+                setViewsIndicators(false, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt, trainingExampleID_txt, trainingExamplePrediction_txt);
 
                 ImageNNTrainingLogic trainingLogic = new ImageNNTrainingLogic(network, data, layers, packageNumber, packageSize, packageRepetitions, learningRate);
-                Observer trainingObserver = prepareObserver(trainingLogic ,trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
+                Observer trainingObserver = prepareObserver(trainingLogic, data,trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt, trainingExample_img, trainingExampleID_txt, trainingExamplePrediction_txt);
                 trainingLogic.addObserver(trainingObserver);
 
                 Service logicService = new LogicService(trainingLogic);
                 logicService.start();
 
                 logicService.setOnSucceeded(logicEvent ->{
-                    setViewsIndicators(true, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
+                    setViewsIndicators(true, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt, trainingExampleID_txt, trainingExamplePrediction_txt);
                     messageTrain_txt.setText("Training done successfully");
                     trainNN_btn.setDisable(false);
                 });
                 logicService.setOnFailed(logicEvent -> {
-                    setViewsIndicators(true, trainingCompleted_txt, trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
+                    setViewsIndicators(true, trainingCompleted_txt, trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt, trainingExampleID_txt, trainingExamplePrediction_txt);
                     messageTrain_txt.setText("Training failed");
                     trainNN_btn.setDisable(false);
                 });
             });
             dataService.setOnFailed(dataEvent -> {
-                setViewsIndicators(true, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt);
+                setViewsIndicators(true, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt, trainingExampleID_txt, trainingExamplePrediction_txt);
                 messageTrain_txt.setText("Error while loading data");
                 trainNN_btn.setDisable(false);
             });
@@ -294,14 +299,16 @@ public class ImageNNController implements Initializable {
         }
     }
 
-    private void setViewsIndicators(boolean state, TextField completed, TextField efficiency, TextField left, TextField timeLeft){
+    private void setViewsIndicators(boolean state, TextField completed, TextField efficiency, TextField left, TextField timeLeft, TextField id, TextField prediction){
+        id.setDisable(state);
+        prediction.setDisable(state);
         completed.setDisable(state);
         efficiency.setDisable(state);
         left.setDisable(state);
         timeLeft.setDisable(state);
     }
 
-    private Observer prepareObserver(Observable logic ,TextField completed, TextField efficiency, TextField left, TextField timeLeft){
+    private Observer prepareObserver(Observable logic, Data dataset, TextField completed, TextField efficiency, TextField left, TextField timeLeft, ImageView exampleImage, TextField exampleID ,TextField prediction){
 
         class ObserverObject implements Observer {
 
@@ -318,16 +325,20 @@ public class ImageNNController implements Initializable {
 
             @Override
             public void update() {
-                completed.setText(observed.getState().getPercentageOfCompleted() + " %");
-                efficiency.setText(observed.getState().getEfficiencyInPercentage() + " %");
-                left.setText(observed.getState().getLeft());
-                timeLeft.setText(observed.getState().getTimeLeft());
+                if(observed.getState() != null) {
+                    completed.setText(observed.getState().getPercentageOfCompleted() + " %");
+                    efficiency.setText(observed.getState().getEfficiencyInPercentage() + " %");
+                    left.setText(observed.getState().getLeft());
+                    timeLeft.setText(observed.getState().getTimeLeft());
+                    prediction.setText(String.valueOf(observed.getState().getPrediction()));
+                    exampleID.setText(String.valueOf(observed.getState().getCurrentInputData()));
+                    int scale = (int) testsExample_img.getFitHeight()/imageWidth;
+                    exampleImage.setImage(SwingFXUtils.toFXImage(new ImageCreator().displayData(dataset.getData(observed.getState().getCurrentInputData()).getSecond(),scale),null));
+                }
             }
         }
 
-        ObserverObject observerObject = new ObserverObject(logic);
-
-        return observerObject;
+        return new ObserverObject(logic);
     }
 
     //TODO do usuniecia

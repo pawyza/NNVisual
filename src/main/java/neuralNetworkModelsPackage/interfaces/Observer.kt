@@ -2,7 +2,7 @@ package neuralNetworkModelsPackage.interfaces
 
 interface Observer {
 
-    val observed : Observable
+    val observed : Observable?
 
     fun update()
 

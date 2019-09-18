@@ -200,6 +200,8 @@ public class ImageNNInitializerController implements Initializable {
     }
 
     private void testPurposeInit() {
+        imageWidth_spin.getValueFactory().setValue(28);
+        imageHeight_spin.getValueFactory().setValue(28);
         inputLayer_txtField.setText("784");
         hiddenLayer_txtField.setText("15");
         outputLayer_txtField.setText("10");

@@ -11,7 +11,7 @@ import java.text.DecimalFormat
 class ImageNNTestingLogic(private val network : NeuralNetwork,private val data : Data,private val layers : Array<Int>) : Logic ,Observable{
 
     override val observers: MutableList<Observer> = mutableListOf()
-    override var state: NetworkState = NetworkState("", "", "", "")
+    override var state: NetworkState? = null
 
     override fun run(){
 
@@ -39,19 +39,14 @@ class ImageNNTestingLogic(private val network : NeuralNetwork,private val data :
 
             if(i % examplesNumber == 0) {
                 state = NetworkState(
+                        currentInputData = i,
+                        prediction = result.indexOf(result.max()),
                         percentageOfCompleted = percentFormatter.format((correct / data.getDataSize().toDouble()) * 100),
                         left = "$testsLeft",
                         efficiencyInPercentage = percentFormatter.format((correct / (i + 1).toDouble())*100),
                         timeLeft = minutesFormatter.format(testsLeft * -(tik - tok) / 60000) + " m " + secondsFormatter.format((testsLeft * -(tik - tok) % 60000) / 1000) + " s")
                 notifyObservers()
             }
-
-
-            /* TODO updateowanie obrazkow
-            if(i % examplesNumber == 0){
-                updateExample(i,data.getData(i),data.getInputSize());
-            }
-            */
         }
     }
 }
