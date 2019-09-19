@@ -261,7 +261,7 @@
                                     <HBox alignment="CENTER" layoutX="522.0" prefHeight="55.0" prefWidth="238.0" spacing="15.0">
                                        <children>
                                           <Button mnemonicParsing="false" onAction="#chooseSaveFilePath" prefHeight="35.0" prefWidth="100.0" text="Choose path" />
-                                          <Button fx:id="save_btn" mnemonicParsing="false" onAction="#save" prefHeight="35.0" prefWidth="100.0" text="Save" />
+                                          <Button fx:id="save_btn" mnemonicParsing="false" onAction="#saveModelFromTrain" prefHeight="35.0" prefWidth="100.0" text="Save" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -339,7 +339,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#createNewModelFromBar" text="New" />
                   <MenuItem mnemonicParsing="false" onAction="#loadModelFromBar" text="Load" />
-                  <MenuItem fx:id="saveModel_barBtn" mnemonicParsing="false" onAction="#saveModel" text="Save" />
+                  <MenuItem fx:id="saveModel_barBtn" mnemonicParsing="false" onAction="#saveModelFromBar" text="Save" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

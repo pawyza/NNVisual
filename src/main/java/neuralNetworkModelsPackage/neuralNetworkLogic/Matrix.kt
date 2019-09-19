@@ -1,5 +1,9 @@
 package neuralNetworkModelsPackage.neuralNetworkLogic
 
+import kotlinx.serialization.ContextualSerialization
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 import java.text.DecimalFormat
 
 /**
@@ -9,8 +13,10 @@ import java.text.DecimalFormat
  * @property y number of rows
  * @property matrix array of arrays holding Matrix object values
  */
-internal class Matrix(x: Int, y: Int) {
+@Serializable
+internal class Matrix(val x: Int,val y: Int) {
 
+    @SerialName("LayerWeights")
     private var matrix = emptyArray<Array<Double>>()
 
     init {

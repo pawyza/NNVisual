@@ -1,10 +1,13 @@
 package neuralNetworkModelsPackage.imageNNPackage;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dataLoadersPackage.csvLoader.Data;
 import dataLoadersPackage.csvLoader.ImageCreator;
 import dataLoadersPackage.csvLoader.SupportedFiles;
 import javafx.concurrent.Service;
 import javafx.scene.text.Text;
+import neuralNetworkModelsPackage.neuralNetworkLogic.NetworkLogic;
 import neuralNetworkModelsPackage.neuralNetworkLogic.NeuralNetwork;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -15,7 +18,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import kotlin.Pair;
+import kotlinx.serialization.json.*;
 import neuralNetworkModelsPackage.interfaces.Observable;
 import neuralNetworkModelsPackage.interfaces.Observer;
 import neuralNetworkModelsPackage.services.DataService;
@@ -128,14 +131,10 @@ public class ImageNNController implements Initializable {
 
     private FileChooser.ExtensionFilter supportedExtension;
 
-    private Double learningRate;
-    private Integer[] layers;
     private Integer imageWidth;
     private NeuralNetwork network;
 
     public ImageNNController(Integer imageWidth,Integer[] layers, Double learningRate){
-        this.learningRate = learningRate;
-        this.layers = layers;
         this.imageWidth = imageWidth;
         supportedExtension = new FileChooser.ExtensionFilter("Data" , SupportedFiles.INSTANCE.getExtensionsList());
         network = new NeuralNetwork(layers, learningRate);
@@ -144,7 +143,7 @@ public class ImageNNController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        learningRate_txt.setText(String.valueOf(learningRate));
+        learningRate_txt.setText(String.valueOf(network.getLearningRate()));
         //TODO do usuniecia
         testSetup();
         //TODO sprawdzanie poprawnosci wpisywanych ustawien i wybieranych sciezek, poprawianie/wyswietlanie komuniktow analogiczne do tworzenia modelu
@@ -201,7 +200,7 @@ public class ImageNNController implements Initializable {
                 Data data = ((DataService) dataService).getValue();
                 setViewsIndicators(false, testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt,testExampleID_txt,testExamplePrediction_txt);
 
-                ImageNNTestingLogic testingLogic = new ImageNNTestingLogic(network, data, layers);
+                ImageNNTestingLogic testingLogic = new ImageNNTestingLogic(network, data, network.getLayers());
 
                 Observer testingObserver = prepareObserver(testingLogic,data,testCompleted_txt,testEfficiency_txt,testsLeft_txt,testTimeLeft_txt,testsExample_img,testExampleID_txt,testExamplePrediction_txt);
                 testingLogic.addObserver(testingObserver);
@@ -238,13 +237,49 @@ public class ImageNNController implements Initializable {
     }
 
     @FXML
-    void save(ActionEvent event) {
-
+    void saveModelFromTrain(ActionEvent event) {
+        save();
     }
 
     @FXML
-    void saveModel(ActionEvent event) {
+    void saveModelFromBar(ActionEvent event) {
+        save();
+    }
 
+    private void save(){
+        class JacksonNetworkModel{
+            private Integer imageWidth;
+            private String network;
+            private JacksonNetworkModel(Integer imageWidth, NeuralNetwork network) {
+                this.imageWidth = imageWidth;
+                //Json json = new Json(JsonConfiguration.Stable);
+                //this.network = json.stringify(NeuralNetwork.serializer(),network);
+            }
+
+            public Integer getImageWidth() {
+                return imageWidth;
+            }
+
+            public void setImageWidth(Integer imageWidth) {
+                this.imageWidth = imageWidth;
+            }
+
+            public String getNetwork() {
+                return network;
+            }
+
+            public void setNetwork(NeuralNetwork network) {
+                //Json json = new Json(JsonConfiguration.Stable);
+                //this.network = json.stringify(NeuralNetwork.serializer(),network);
+            }
+        }
+        JacksonNetworkModel model = new JacksonNetworkModel(imageWidth,network);
+        ObjectMapper jacksonMapper = new ObjectMapper();
+        try {
+            System.out.println(jacksonMapper.writeValueAsString(model));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -269,7 +304,7 @@ public class ImageNNController implements Initializable {
                 Data data = ((DataService) dataService).getValue();
                 setViewsIndicators(false, trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt, trainingExampleID_txt, trainingExamplePrediction_txt);
 
-                ImageNNTrainingLogic trainingLogic = new ImageNNTrainingLogic(network, data, layers, packageNumber, packageSize, packageRepetitions, learningRate);
+                ImageNNTrainingLogic trainingLogic = new ImageNNTrainingLogic(network, data, network.getLayers(), packageNumber, packageSize, packageRepetitions, learningRate);
                 Observer trainingObserver = prepareObserver(trainingLogic, data,trainingCompleted_txt,trainingLastPackageEfficiency_txt, trainingPackagesLeft_txt, trainingTimeLeft_txt, trainingExample_img, trainingExampleID_txt, trainingExamplePrediction_txt);
                 trainingLogic.addObserver(trainingObserver);
 

@@ -21,7 +21,6 @@ class ImageNNTrainingLogic(private  val network : NeuralNetwork, private val dat
         val secondsFormatter = DecimalFormat("00")
 
         var result : Array<Double> = arrayOf()
-        var correct = 0
         network.learningRate = learningRate
 
         for (l in 1.rangeTo(packages)) {
@@ -33,7 +32,7 @@ class ImageNNTrainingLogic(private  val network : NeuralNetwork, private val dat
                     network.learnNetwork(data.getData(element).first.toInt())
                 }
             }
-            correct = 0
+            var correct = 0
             for (element in dataPack) {
                 result = network.predict(data.getData(element).second)
                 if (result.indexOf(result.max()) == data.getData(element).first.toInt())
