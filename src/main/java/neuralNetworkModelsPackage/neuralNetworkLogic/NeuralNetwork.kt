@@ -1,8 +1,9 @@
 package neuralNetworkModelsPackage.neuralNetworkLogic
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Transient
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.text.DecimalFormat
 import kotlin.math.pow
 
@@ -15,14 +16,15 @@ import kotlin.math.pow
  * @property biases array of Double arrays containing biases for every neuron and layer
  * @property activations array of Double arrays containing activations for every neuron and layer
  */
-@Serializable
-class NeuralNetwork(@SerialName("Layers") val layers: Array<Int>,@SerialName("Rate") var learningRate : Double) {
+@JsonInclude(JsonInclude.Include.CUSTOM)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+class NeuralNetwork(@JsonProperty("Layers") var layers: Array<Int>,@JsonProperty("LearningRate") var learningRate : Double) {
 
-    @SerialName("AllWeights")
+    @JsonProperty("Weights")
     private var weights: Array<Matrix> = emptyArray()
-    @SerialName("Biases")
+    @JsonProperty("Biases")
     private var biases: Array<Array<Double>> = emptyArray()
-    @Transient
+    @JsonIgnore
     private var activations: Array<Array<Double>> = emptyArray()
 
     /**

@@ -1,9 +1,8 @@
 package neuralNetworkModelsPackage.neuralNetworkLogic
 
-import kotlinx.serialization.ContextualSerialization
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.text.DecimalFormat
 
 /**
@@ -13,10 +12,10 @@ import java.text.DecimalFormat
  * @property y number of rows
  * @property matrix array of arrays holding Matrix object values
  */
-@Serializable
-internal class Matrix(val x: Int,val y: Int) {
+@JsonInclude(JsonInclude.Include.CUSTOM)
+internal class Matrix(@JsonIgnore val x: Int,@JsonIgnore val y: Int) {
 
-    @SerialName("LayerWeights")
+    @JsonProperty("WeightsLayer")
     private var matrix = emptyArray<Array<Double>>()
 
     init {

@@ -1,13 +1,15 @@
 package neuralNetworkModelsPackage.imageNNPackage;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import dataLoadersPackage.csvLoader.Data;
 import dataLoadersPackage.csvLoader.ImageCreator;
 import dataLoadersPackage.csvLoader.SupportedFiles;
 import javafx.concurrent.Service;
 import javafx.scene.text.Text;
-import neuralNetworkModelsPackage.neuralNetworkLogic.NetworkLogic;
 import neuralNetworkModelsPackage.neuralNetworkLogic.NeuralNetwork;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -18,7 +20,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import kotlinx.serialization.json.*;
 import neuralNetworkModelsPackage.interfaces.Observable;
 import neuralNetworkModelsPackage.interfaces.Observer;
 import neuralNetworkModelsPackage.services.DataService;
@@ -249,11 +250,10 @@ public class ImageNNController implements Initializable {
     private void save(){
         class JacksonNetworkModel{
             private Integer imageWidth;
-            private String network;
+            private NeuralNetwork network;
             private JacksonNetworkModel(Integer imageWidth, NeuralNetwork network) {
                 this.imageWidth = imageWidth;
-                //Json json = new Json(JsonConfiguration.Stable);
-                //this.network = json.stringify(NeuralNetwork.serializer(),network);
+                this.network = network;
             }
 
             public Integer getImageWidth() {
@@ -264,19 +264,18 @@ public class ImageNNController implements Initializable {
                 this.imageWidth = imageWidth;
             }
 
-            public String getNetwork() {
+            public NeuralNetwork getNetwork() {
                 return network;
             }
 
             public void setNetwork(NeuralNetwork network) {
-                //Json json = new Json(JsonConfiguration.Stable);
-                //this.network = json.stringify(NeuralNetwork.serializer(),network);
+                this.network = network;
             }
         }
         JacksonNetworkModel model = new JacksonNetworkModel(imageWidth,network);
-        ObjectMapper jacksonMapper = new ObjectMapper();
+        ObjectMapper jacksonMapper = new ObjectMapper().registerModule(new KotlinModule());
         try {
-            System.out.println(jacksonMapper.writeValueAsString(model));
+            System.out.println(jacksonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(model));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
