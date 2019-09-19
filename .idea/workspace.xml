@@ -2,28 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ef7f67d-29b4-439b-adff-ff765b37ce8d" name="Initialization form added" comment="Using kotlinx for parsing neural network object. Model parsing not supported.">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_win_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_win_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_win_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_win_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_media_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_media_win_12.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-reflect-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-reflect.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk7-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk7.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk8-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk8.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-test-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-test.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Initialization form added" />
     <ignored path="JavaFxApplication.iws" />
@@ -96,14 +76,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/neuralNetworkModelsPackage/imageNNPackage/ImageNNController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="275" column="91" selection-start-line="275" selection-start-column="91" selection-end-line="275" selection-end-column="91" />
+            <state relative-caret-position="25">
+              <caret line="238" lean-forward="true" selection-start-line="238" selection-end-line="238" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="143" lean-forward="true" selection-start-line="143" selection-end-line="143" />
             </state>
           </provider>
         </entry>
@@ -154,7 +143,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/menuPackage/ImageNNInitializerController.java" />
         <option value="$PROJECT_DIR$/src/imageNNPackage/ImageNNTrainingLogic.java" />
         <option value="$PROJECT_DIR$/src/imageNNPackage/ImageNNLearningLogic.kt" />
         <option value="$PROJECT_DIR$/src/imageNNPackage/logic/ImageNNLearningLogic.kt" />
@@ -205,6 +193,7 @@
         <option value="$PROJECT_DIR$/src/main/java/neuralNetworkModelsPackage/neuralNetworkLogic/Main.kt" />
         <option value="$PROJECT_DIR$/src/main/java/module-info.java" />
         <option value="$PROJECT_DIR$/src/main/java/neuralNetworkModelsPackage/imageNNPackage/ImageNNController.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -217,10 +206,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="778" />
-    <option name="y" value="120" />
-    <option name="width" value="979" />
-    <option name="height" value="1040" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="978" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -234,8 +223,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -325,6 +312,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -494,6 +483,7 @@
       <workItem from="1568828386125" duration="4645000" />
       <workItem from="1568895467072" duration="10783000" />
       <workItem from="1568912419609" duration="1000" />
+      <workItem from="1568912593623" duration="368000" />
     </task>
     <task id="LOCAL-00001" summary="Initialization form added">
       <created>1568067309995</created>
@@ -576,7 +566,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="121912000" />
+    <option name="totallyTimeSpent" value="122280000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -588,10 +578,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="623" y="96" width="783" height="832" extended-state="0" />
+    <frame x="-7" y="-7" width="782" height="838" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="top" id="Ant Build" order="0" side_tool="true" weight="0.2489019" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.2351314" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.24238227" />
       <window_info id="Structure" order="1" weight="0.252349" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -606,7 +597,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329429" />
       <window_info anchor="bottom" id="Application Servers" order="7" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32503662" />
+      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32064423" />
       <window_info anchor="bottom" id="Problems" order="9" />
       <window_info anchor="bottom" id="Changes" order="10" />
       <window_info anchor="bottom" id="Profiler" order="11" />
@@ -728,13 +719,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk-11/lib/src.zip!/java.base/jdk/internal/reflect/NativeMethodAccessorImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/menuPackage/nnLoader.fxml" />
     <entry file="file://$PROJECT_DIR$/src/imageNNPackage/logic/ph.kt" />
     <entry file="jar://$PROJECT_DIR$/../../openjfx-12.0.2_windows-x64_bin-sdk/javafx-sdk-12.0.2/lib/javafx.controls.jar!/javafx/scene/control/SpinnerValueFactory.class">
@@ -1043,11 +1027,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/neuralNetworkModelsPackage/imageNNPackage/ImageNNController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="275" column="91" selection-start-line="275" selection-start-column="91" selection-end-line="275" selection-end-column="91" />
+        <state relative-caret-position="25">
+          <caret line="238" lean-forward="true" selection-start-line="238" selection-end-line="238" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="143" lean-forward="true" selection-start-line="143" selection-end-line="143" />
         </state>
       </provider>
     </entry>
