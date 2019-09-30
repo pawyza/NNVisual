@@ -9,9 +9,10 @@ module NNVisual {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.module.kotlin;
 
-    exports neuralNetworkModelsPackage.neuralNetworkLogic;
+    exports modelsLogic.neuralNetworkLogic;
+    exports modelsLogic.persistence;
 
-    opens menuPackage;
-    opens neuralNetworkModelsPackage.neuralNetworkLogic;
-    opens neuralNetworkModelsPackage.imageNNPackage;
+    opens menu;
+    opens modelsLogic.neuralNetworkLogic;
+    opens modelsLogic.models.imageNN;
 }

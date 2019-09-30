@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="neuralNetworkModelsPackage.imageNNPackage.ImageNNController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="modelsLogic.models.imageNN.ImageNNController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
          <tabs>
@@ -127,7 +127,7 @@
                                           <Insets left="10.0" />
                                        </padding>
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Training data:">
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Training describedData:">
                                              <HBox.margin>
                                                 <Insets />
                                              </HBox.margin>
@@ -243,32 +243,9 @@
                                     </HBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane prefHeight="52.0" prefWidth="770.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" layoutY="6.0" prefHeight="42.0" prefWidth="522.0" spacing="10.0">
-                                       <padding>
-                                          <Insets left="20.0" />
-                                       </padding>
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Save path:">
-                                             <HBox.margin>
-                                                <Insets right="10.0" />
-                                             </HBox.margin>
-                                          </Text>
-                                          <TextField fx:id="saveNNPath_txt" prefHeight="26.0" prefWidth="416.0" promptText="save path" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" layoutX="522.0" prefHeight="55.0" prefWidth="238.0" spacing="15.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#chooseSaveFilePath" prefHeight="35.0" prefWidth="100.0" text="Choose path" />
-                                          <Button fx:id="save_btn" mnemonicParsing="false" onAction="#saveModelFromTrain" prefHeight="35.0" prefWidth="100.0" text="Save" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </AnchorPane>
                               <AnchorPane>
                                  <children>
-                                    <HBox alignment="CENTER" layoutX="4.0" layoutY="-7.0" prefHeight="42.0" prefWidth="762.0" spacing="15.0">
+                                    <HBox alignment="CENTER" layoutX="4.0" layoutY="-7.0" prefHeight="93.0" prefWidth="762.0" spacing="15.0">
                                        <padding>
                                           <Insets left="20.0" />
                                        </padding>
@@ -291,40 +268,66 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Give data">
+            <Tab text="Perdict">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="600.0">
                      <children>
                         <VBox prefHeight="320.0" prefWidth="762.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="39.0" prefWidth="762.0">
+                              <AnchorPane prefHeight="76.0" prefWidth="762.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Test on custom data:" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="514.0" spacing="10.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data:">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </Text>
+                                          <TextField fx:id="predictPath_txt" prefHeight="26.0" prefWidth="416.0" promptText="path to file" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
+                                    <VBox layoutX="514.0" prefHeight="60.0" prefWidth="246.0">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="44.0" prefWidth="246.0" spacing="15.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" onAction="#chooseDataToPredictFilePath" prefHeight="35.0" prefWidth="100.0" text="Choose file" />
+                                                <Button fx:id="predict_btn" mnemonicParsing="false" onAction="#predict" prefHeight="35.0" prefWidth="100.0" text="Predict" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="12.0" prefWidth="246.0" spacing="15.0">
+                                             <children>
+                                                <Text fx:id="messagePredict_txt" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="234.0" prefWidth="762.0" spacing="20.0">
+                              </AnchorPane>
+                              <AnchorPane prefHeight="76.0" prefWidth="762.0">
                                  <children>
-                                    <ImageView fx:id="customData_img" fitHeight="231.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" />
-                                    <ImageView fx:id="customDataNNState_img" fitHeight="231.0" fitWidth="410.0" pickOnBounds="true" preserveRatio="true" />
+                                    <HBox alignment="CENTER" prefHeight="207.0" prefWidth="762.0" spacing="20.0">
+                                       <children>
+                                          <ImageView fx:id="predict_img" fitHeight="231.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="predictState_img" fitHeight="231.0" fitWidth="410.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="762.0" spacing="20.0">
+                              </AnchorPane>
+                              <AnchorPane prefHeight="76.0" prefWidth="762.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Prediction:" />
-                                    <TextField fx:id="customDataPrediction_txt" alignment="CENTER_RIGHT" disable="true" editable="false" promptText="prediction" />
+                                    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="762.0" spacing="20.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Prediction:" />
+                                          <TextField fx:id="prediction_txt" alignment="CENTER_RIGHT" disable="true" editable="false" promptText="prediction" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </AnchorPane>
                            </children>
                         </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Statistics">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="600.0">
-                     <children>
-                        <VBox prefHeight="317.0" prefWidth="762.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -338,8 +341,8 @@
             <Menu mnemonicParsing="false" text="Network">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#createNewModelFromBar" text="New" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadModelFromBar" text="Load" />
-                  <MenuItem fx:id="saveModel_barBtn" mnemonicParsing="false" onAction="#saveModelFromBar" text="Save" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadModel" text="Load" />
+                  <MenuItem fx:id="saveModel_barBtn" mnemonicParsing="false" onAction="#saveModel" text="Save" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
