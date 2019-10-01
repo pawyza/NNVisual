@@ -1,17 +1,22 @@
 package menu;
 
+import data.representation.ImageCreator;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainController {
+public class MainController{
 
     @FXML
     private MenuItem saveModel_barBtn;
@@ -24,6 +29,15 @@ public class MainController {
 
     @FXML
     private Button deleteModel_btn;
+
+    @FXML
+    private TableView<ModelRepresentation> modelsTable_tab;
+
+    @FXML
+    private TableColumn<ModelRepresentation, String> modelName_col;
+
+    @FXML
+    private TableColumn<ModelRepresentation, String> modelType_col;
 
     @FXML
     void createNewModel(ActionEvent event) {
@@ -42,27 +56,13 @@ public class MainController {
     }
 
     @FXML
-    void createNewModelFromBar(ActionEvent event) {
-    }
-
-    @FXML
     void deleteModel(ActionEvent event) {
-
+        ModelRepresentation model= modelsTable_tab.getSelectionModel().getSelectedItem();
     }
 
     @FXML
     void loadModel(ActionEvent event) {
-
-    }
-
-    @FXML
-    void loadModelFromBar(ActionEvent event) {
-
-    }
-
-    @FXML
-    void saveModel(ActionEvent event) {
-
+        ModelRepresentation model= modelsTable_tab.getSelectionModel().getSelectedItem();
     }
 
     @FXML
@@ -70,4 +70,28 @@ public class MainController {
 
     }
 
+    private class ModelRepresentation{
+        private String name;
+        private String type;
+
+        public ModelRepresentation(String name, String type) {
+            this.name = name;
+            this.type = type;
+        }
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+    }
 }

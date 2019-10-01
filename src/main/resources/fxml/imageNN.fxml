@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -308,20 +310,20 @@
                               </AnchorPane>
                               <AnchorPane prefHeight="76.0" prefWidth="762.0">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="207.0" prefWidth="762.0" spacing="20.0">
+                                    <HBox alignment="CENTER" prefHeight="267.0" prefWidth="762.0" spacing="20.0">
                                        <children>
-                                          <ImageView fx:id="predict_img" fitHeight="231.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="predictState_img" fitHeight="231.0" fitWidth="410.0" pickOnBounds="true" preserveRatio="true" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane prefHeight="76.0" prefWidth="762.0">
-                                 <children>
-                                    <HBox alignment="CENTER" prefHeight="50.0" prefWidth="762.0" spacing="20.0">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Prediction:" />
-                                          <TextField fx:id="prediction_txt" alignment="CENTER_RIGHT" disable="true" editable="false" promptText="prediction" />
+                                          <ImageView fx:id="predict_img" fitHeight="176.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="predictState_img" fitHeight="169.0" fitWidth="301.0" pickOnBounds="true" preserveRatio="true" />
+                                          <VBox prefHeight="267.0" prefWidth="148.0">
+                                             <children>
+                                                <TableView fx:id="prediction_tab" prefHeight="267.0" prefWidth="148.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="predictionTabID_col" prefWidth="75.0" text="Example ID" />
+                                                    <TableColumn fx:id="predictionTabPred_col" prefWidth="75.0" text="Prediction" />
+                                                  </columns>
+                                                </TableView>
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                  </children>

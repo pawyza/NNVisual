@@ -12,7 +12,7 @@ class ImageNNPredictLogic(private val network : NeuralNetwork, private val data 
 
     override val observers: MutableList<Observer> = mutableListOf()
     override var state: NetworkState? = null
-    private val answersList = mutableListOf<Int>()
+    private val answersList = mutableListOf<Pair<Int,Array<Double>>>()
 
     override fun run() {
         require(network.layers[0] == data.getInputSize())
@@ -27,7 +27,7 @@ class ImageNNPredictLogic(private val network : NeuralNetwork, private val data 
         for(i in 0 until data.getDataSize()){
             val tik = System.currentTimeMillis()
             val result = network.predict(data.getData(i))
-            answersList.add(result.indexOf(result.max()))
+            answersList.add(Pair(result.indexOf(result.max()),data.getData(i)))
             val tok = System.currentTimeMillis();
 
             //Observer implementation
@@ -46,7 +46,7 @@ class ImageNNPredictLogic(private val network : NeuralNetwork, private val data 
         }
     }
 
-    fun getPredictions() : List<Int>{
+    fun getPredictions() : List<Pair<Int,Array<Double>>>{
         return answersList
     }
 }

@@ -5,9 +5,13 @@ import data.holder.NotDescribedData;
 import data.representation.ImageCreator;
 import data.loaders.SupportedFiles;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import kotlin.Pair;
 import modelsLogic.persistence.JacksonNetworkModel;
 import modelsLogic.persistence.JsonManager;
 import modelsLogic.neuralNetworkLogic.NeuralNetwork;
@@ -26,6 +30,7 @@ import modelsLogic.services.NotDescribedDataService;
 import java.io.*;
 import java.net.URL;
 import java.nio.Buffer;
+import java.time.Instant;
 import java.util.*;
 
 //TODO rozwiazac problem bledow dla zbyt szybkiej pracy nn i kontrolek z observera
@@ -126,7 +131,13 @@ public class ImageNNController implements Initializable {
     private TextField predictPath_txt;
 
     @FXML
-    private TextField prediction_txt;
+    private TableView<Prediction> prediction_tab;
+
+    @FXML
+    private TableColumn<Prediction, Integer> predictionTabID_col;
+
+    @FXML
+    private TableColumn<Prediction, Integer> predictionTabPred_col;
 
     @FXML
     private MenuItem saveModel_barBtn;
@@ -147,6 +158,15 @@ public class ImageNNController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         learningRate_txt.setText(String.valueOf(network.getLearningRate()));
+
+        prediction_tab.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSlection) -> {
+            if(newSlection != null){
+                int scale = (int) testsExample_img.getFitHeight() / imageWidth;
+                predict_img.setImage(SwingFXUtils.toFXImage(new ImageCreator().displayData(newSlection.getData(), scale), null));
+
+            }
+        });
+
         //TODO do usuniecia
         testSetup();
         //TODO sprawdzanie poprawnosci wpisywanych ustawien i wybieranych sciezek, poprawianie/wyswietlanie komuniktow analogiczne do tworzenia modelu
@@ -211,13 +231,41 @@ public class ImageNNController implements Initializable {
 
     private void save(String jsonModel, File file){
         try {
-            PrintWriter printWriter = new PrintWriter(new FileWriter(file, false));
-            printWriter.print(jsonModel);
-            printWriter.close();
+            PrintWriter modelWriter = new PrintWriter(new FileWriter(file, false));
+            modelWriter.print(jsonModel);
+            modelWriter.close();
+            addSaveLocation(file);
             showAlert("Success","Model saved successfully.");
         } catch (IOException e) {
             showAlert("Error","Cannot save model.");
         }
+    }
+
+    private void addSaveLocation(File file){
+        try {
+            File saveLocation = new File("src/main/resources/settings/savedModelLocation.txt").getAbsoluteFile();
+            saveLocation.createNewFile();
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(saveLocation));
+            String line;
+            boolean exists = false;
+            while ((line = bufferedReader.readLine()) != null) {
+                if(line.split("\\|")[0].trim().equals(file.getAbsolutePath())){
+                    exists = true;
+                }
+            }
+            if(!exists) {
+                PrintWriter settingsWriter = new PrintWriter(new FileWriter(saveLocation, true));
+                settingsWriter.println(file.getAbsolutePath() + " | " + getLastPackageName(getClass().getPackage().getName()));
+                settingsWriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getLastPackageName(String fullPackage){
+        String[] spliced = fullPackage.split("\\.");
+        return spliced[spliced.length-1];
     }
 
     private void load(File file){
@@ -345,7 +393,6 @@ public class ImageNNController implements Initializable {
         }
     }
 
-
     @FXML
     void predict(ActionEvent event) {
         try {
@@ -357,15 +404,17 @@ public class ImageNNController implements Initializable {
                 NotDescribedData notDescribedData = ((NotDescribedDataService) dataService).getValue();
 
                 ImageNNPredictLogic predictLogic = new ImageNNPredictLogic(network, notDescribedData);
-                Observer trainingObserver = prepareObserver(predictLogic, notDescribedData, predict_img, prediction_txt);
+                Observer trainingObserver = prepareObserver(predictLogic, notDescribedData, predict_img);
                 predictLogic.addObserver(trainingObserver);
-
-                predictLogic.run();
 
                 Service logicService = new LogicService(predictLogic);
                 logicService.start();
 
                 logicService.setOnSucceeded(logicEvent ->{
+                    ObservableList<Prediction> predictions = FXCollections.observableArrayList(createList(predictLogic.getPredictions()));
+                    predictionTabID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+                    predictionTabPred_col.setCellValueFactory(new PropertyValueFactory<>("prediction"));
+                    prediction_tab.setItems(predictions);
                     messagePredict_txt.setDisable(true);
                     messagePredict_txt.setText("");
                     predict_btn.setDisable(false);
@@ -397,11 +446,12 @@ public class ImageNNController implements Initializable {
         timeLeft.setDisable(state);
     }
 
-    private Observer prepareObserver(Observable logic, NotDescribedData dataset, ImageView exampleImage, TextField prediction) {
+    private Observer prepareObserver(Observable logic, NotDescribedData dataset, ImageView exampleImage) {
 
         class ObserverObject implements Observer {
 
             private final Observable observed;
+            private ObservableList<Prediction> predictions = FXCollections.observableArrayList();
 
             private ObserverObject(Observable observed) {
                 this.observed = observed;
@@ -416,7 +466,6 @@ public class ImageNNController implements Initializable {
             public void update() {
                 if (observed.getState() != null) {
                     Platform.runLater(() -> {
-                        prediction.setText(String.valueOf(observed.getState().getPrediction()));
                         int scale = (int) testsExample_img.getFitHeight() / imageWidth;
                         exampleImage.setImage(SwingFXUtils.toFXImage(new ImageCreator().displayData(dataset.getData(observed.getState().getCurrentInputData()), scale), null));
                     });
@@ -466,9 +515,54 @@ public class ImageNNController implements Initializable {
     private void testSetup(){
         testDataPath_txt.setText("D:\\nnLearning\\mnist_test.csv");
         trainDataPath_txt.setText("D:\\nnLearning\\mnist_train.csv");
-        predictPath_txt.setText("D:\\nnLearning\\mnist_predict_one.csv");
+        predictPath_txt.setText("D:\\nnLearning\\mnist_predict_ten.csv");
         packagesNumber_txt.setText("100");
         packageSize_txt.setText("10");
         packageRepetitions_txt.setText("10");
+    }
+
+    private List<Prediction> createList(List<Pair<Integer,Double[]>> predictions) {
+        List<Prediction> predictionsObjList = new ArrayList<>();
+        for(int i = 0; i < predictions.size(); i++){
+            predictionsObjList.add(new Prediction(i+1,predictions.get(i).getFirst(),predictions.get(i).getSecond()));
+        }
+        return predictionsObjList;
+    }
+
+    public class Prediction{
+        private Integer id;
+        private Integer prediction;
+        private Double[] data;
+
+        Prediction(Integer id, Integer prediction, Double[] data) {
+            this.id = id;
+            this.prediction = prediction;
+            this.data = data;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getPrediction() {
+            return prediction;
+        }
+
+        public void setPrediction(Integer prediction) {
+            this.prediction = prediction;
+        }
+
+        public Double[] getData() {
+            return data;
+        }
+
+        public void setData(Double[] data) {
+            this.data = data;
+        }
+
     }
 }

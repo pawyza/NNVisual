@@ -15,13 +15,6 @@
    <top>
       <MenuBar prefHeight="25.0" prefWidth="762.0" BorderPane.alignment="CENTER">
          <menus>
-            <Menu mnemonicParsing="false" text="Network">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#createNewModelFromBar" text="New" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadModelFromBar" text="Load" />
-                  <MenuItem fx:id="saveModel_barBtn" mnemonicParsing="false" onAction="#saveModel" text="Save" />
-               </items>
-            </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#showInfo" text="About" />
@@ -31,13 +24,17 @@
       </MenuBar>
    </top>
    <left>
-      <AnchorPane prefHeight="374.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="374.0" prefWidth="205.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" layoutX="41.0" layoutY="22.0" prefHeight="330.0" prefWidth="180.0" spacing="40.0" AnchorPane.rightAnchor="41.39999999999998" AnchorPane.topAnchor="22.0">
+            <VBox alignment="CENTER" prefHeight="375.0" prefWidth="208.0">
                <children>
-                  <Button fx:id="newModel_btn" mnemonicParsing="false" onAction="#createNewModel" prefHeight="30.0" prefWidth="100.0" text="New model" />
-                  <Button fx:id="loadModel_btn" mnemonicParsing="false" onAction="#loadModel" prefHeight="30.0" prefWidth="100.0" text="Load model" />
-                  <Button fx:id="deleteModel_btn" mnemonicParsing="false" onAction="#deleteModel" prefHeight="30.0" prefWidth="100.0" text="Delete model" />
+                  <VBox alignment="CENTER" prefHeight="330.0" prefWidth="180.0" spacing="40.0">
+                     <children>
+                        <Button fx:id="newModel_btn" mnemonicParsing="false" onAction="#createNewModel" prefHeight="30.0" prefWidth="100.0" text="New model" />
+                        <Button fx:id="loadModel_btn" mnemonicParsing="false" onAction="#loadModel" prefHeight="30.0" prefWidth="100.0" text="Load model" />
+                        <Button fx:id="deleteModel_btn" mnemonicParsing="false" onAction="#deleteModel" prefHeight="30.0" prefWidth="100.0" text="Delete model" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </children>
@@ -47,12 +44,12 @@
       </AnchorPane>
    </left>
    <center>
-      <AnchorPane prefHeight="374.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="374.0" prefWidth="564.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView layoutX="23.0" layoutY="18.0" prefHeight="330.0" prefWidth="300.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.399999999999977" AnchorPane.topAnchor="18.0">
+            <TableView fx:id="modelsTable_tab" layoutX="23.0" layoutY="18.0" prefHeight="330.0" prefWidth="300.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.399999999999977" AnchorPane.topAnchor="18.0">
               <columns>
-                <TableColumn prefWidth="123.19998168945312" text="Last modification" />
-                <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="329.60003051757815" text="Model name" />
+                <TableColumn fx:id="modelName_col" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="255.0" text="Model name" />
+                  <TableColumn fx:id="modelType_col" minWidth="-1.0" prefWidth="255.0" text="Model type" />
               </columns>
             </TableView>
          </children>
